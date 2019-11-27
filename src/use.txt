@@ -6,3 +6,10 @@ Une fois compilé taper :
 
 - Pour fonctionner le fichier avec les instructions doit être de la forme :
     [ Forward 10, Repeat 10 [ Right 10, Forward 50 ] ] par exemple
+
+Exemples de commande :
+
+logo-hs.exe ExempleInstruction.txt dessin green
+logo-hs.exe ExempleInstruction.txt dessin.svg red
+logo-hs.exe ExempleInstruction.txt dessin
+
