@@ -19,6 +19,8 @@ type ListInstruction = [Instruction]
 originCrayon = Crayon 200.0 200.0 0.0
 svgContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?> \n <svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"400\" height=\"400\"> \n <title>LogoHaskell Generator</title> \n"
 defaultColor = "black"
+colorList = ["green","red","black","pink","maroon","orange","yellow","olive","purple","fuchsia","lime","teal","aqua","blue","navy","gray","silver","white"]
+errorType = "Couleur non reconnue, utiliser le format hexadecimal ou les noms suivant: \n" ++ (show colorList)
 
 --Fonction ajout d'element dans une liste pour la construction du xml
 addElemInList x c lst
@@ -42,16 +44,16 @@ generator (currentInstruction:restOfList) (Crayon x y angle) svgContent color = 
                     where newCrayon = Crayon x y angle
                           restOfListWithRepeat = (addElemInList instruction nbInstru restOfList)
 
-
 main = do
     args <- getArgs
     inputfile <- openFile (args !! 0) ReadMode
     content <- hGetContents inputfile
---    if read (args !! 2)
---    then
---        writeFile (args !! 1) (generator (parse content) originCrayon svgContent (args !! 2))
---    else
---        writeFile (args !! 1) (generator (parse content) originCrayon svgContent defaultColor)
---    writeFile (args !! 1) (generator (parse content) originCrayon svgContent chosenColor)
---        where chosenColor = if isJust (args !! 2) then (args !! 2) else defaultColor
-    writeFile (args !! 1) (generator (parse content) originCrayon svgContent (args !! 2))
+    if length args == 3
+    then
+        if (((args !! 2) `elem` colorList ) || ((head (args !! 2) == '#') && ((length(tail (args !! 2))) == 6)))
+        then
+            writeFile (args !! 1) (generator (parse content) originCrayon svgContent (args !! 2))
+        else
+            print errorType
+    else
+        writeFile (args !! 1) (generator (parse content) originCrayon svgContent defaultColor)
