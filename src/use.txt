@@ -1,0 +1,8 @@
+Pour utiliser le programme :
+Une fois compilé taper :
+    logo-hs.exe <nom du fichier avec les instructions> <nom du fichier de sortie> [une couleur au format hexadécimale ou un nom générique]
+
+- La couleur dans la ligne est optionnelle pour le bon fonctionnement du programme, par défaut la couleur noire est utilisée
+
+- Pour fonctionner le fichier avec les instructions doit être de la forme :
+    [ Forward 10, Repeat 10 [ Right 10, Forward 50 ] ] par exemple

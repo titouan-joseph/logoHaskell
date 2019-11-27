@@ -45,15 +45,25 @@ generator (currentInstruction:restOfList) (Crayon x y angle) svgContent color = 
                           restOfListWithRepeat = (addElemInList instruction nbInstru restOfList)
 
 main = do
-    args <- getArgs
-    inputfile <- openFile (args !! 0) ReadMode
-    content <- hGetContents inputfile
+    args <- getArgs  --Recupere les arguments passer en parametre lors de l'appel du programme
+    inputfile <- openFile (args !! 0) ReadMode --Ouverture du fichier en mode lecture
+    content <- hGetContents inputfile  --Get instruction
+
+-- Verification de l'extension
+    let outputfile = if (('g' == (last (args !! 1))) &&         --On test si les 4 dernier caractere correspondent a .svg
+                         ('v' == (last(init(args !! 1)))) &&
+                         ('s' == (last(init(init(args !! 1))))) &&
+                         ('.' == (last(init(init(init(args !! 1)))))))
+                         then (args !! 1)
+                         else ((args !! 1) ++ ".svg")
+
+-- On regarde si l'utilisateur a defini une couleur
     if length args == 3
     then
-        if (((args !! 2) `elem` colorList ) || ((head (args !! 2) == '#') && ((length(tail (args !! 2))) == 6)))
+        if (((args !! 2) `elem` colorList ) || ((head (args !! 2) == '#') && ((length(tail (args !! 2))) == 6)))  --verfication des noms de couleur dans la preiere partie, pour le format hexadecimal, nous faissons confiance a l'utilisateur our utiliser les bon caracteres
         then
-            writeFile (args !! 1) (generator (parse content) originCrayon svgContent (args !! 2))
+            writeFile outputfile (generator (parse content) originCrayon svgContent (args !! 2))
         else
-            print errorType
+            print errorType  -- Indication a l'utilisateur que la couleur n'est pas reconnue
     else
-        writeFile (args !! 1) (generator (parse content) originCrayon svgContent defaultColor)
+        writeFile outputfile (generator (parse content) originCrayon svgContent defaultColor)
